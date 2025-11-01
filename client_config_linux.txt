@@ -1,0 +1,25 @@
+# Configuración para máquinas Linux cliente
+
+## Opción 1: Editar archivo hosts
+# Editar el archivo /etc/hosts:
+# sudo nano /etc/hosts
+
+# Agregar estas líneas:
+10.80.80.104    fiberops.com.pe
+10.80.80.104    www.fiberops.com.pe
+
+## Opción 2: Configurar DNS
+# Editar el archivo de configuración de red:
+# sudo nano /etc/netplan/01-netcfg.yaml
+
+# O para sistemas más antiguos:
+# sudo nano /etc/resolv.conf
+
+# Agregar:
+# nameserver 10.80.80.104
+# nameserver 8.8.8.8
+
+## Verificar configuración:
+# nslookup fiberops.com.pe
+# ping fiberops.com.pe
+# dig fiberops.com.pe

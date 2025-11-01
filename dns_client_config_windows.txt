@@ -1,0 +1,85 @@
+# Configuración DNS para máquinas Windows cliente
+
+## Método 1: Configurar DNS desde Configuración de Red (Recomendado)
+
+### Paso a paso:
+1. **Abrir Configuración de Red:**
+   - Clic derecho en el icono de red (esquina inferior derecha)
+   - Seleccionar "Abrir configuración de red e Internet"
+
+2. **Acceder a Configuración Avanzada:**
+   - Clic en "Cambiar opciones del adaptador"
+   - Clic derecho en tu conexión de red activa
+   - Seleccionar "Propiedades"
+
+3. **Configurar IPv4:**
+   - Seleccionar "Protocolo de Internet versión 4 (TCP/IPv4)"
+   - Clic en "Propiedades"
+
+4. **Configurar DNS:**
+   - Seleccionar "Usar las siguientes direcciones de servidor DNS"
+   - **Servidor DNS preferido:** 10.80.80.104 (IP de tu servidor Ubuntu)
+   - **Servidor DNS alternativo:** 8.8.8.8 (Google DNS como respaldo)
+   - Marcar "Validar configuración al salir"
+   - Clic en "Aceptar"
+
+5. **Aplicar cambios:**
+   - Clic en "Aceptar" en todas las ventanas
+   - Reiniciar la conexión de red si es necesario
+
+## Método 2: Comando PowerShell (Administrador)
+
+```powershell
+# Obtener el nombre de la interfaz de red
+Get-NetAdapter | Where-Object {$_.Status -eq "Up"}
+
+# Configurar DNS (reemplazar "Ethernet" por tu interfaz)
+Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses "10.80.80.104","8.8.8.8"
+```
+
+## Verificar configuración:
+
+### Comandos CMD:
+```cmd
+# Ver configuración DNS actual
+ipconfig /all
+
+# Limpiar caché DNS
+ipconfig /flushdns
+
+# Probar resolución DNS
+nslookup fiberops.com.pe
+nslookup fiberops.com.pe 10.80.80.104
+
+# Probar conectividad
+ping fiberops.com.pe
+```
+
+### Probar en navegador:
+- Abrir: http://fiberops.com.pe
+- Debería mostrar tu sitio web
+
+## Solución de problemas:
+
+### Si no funciona:
+1. **Verificar que el servidor DNS esté funcionando:**
+   ```cmd
+   nslookup fiberops.com.pe 10.80.80.104
+   ```
+
+2. **Verificar conectividad:**
+   ```cmd
+   ping 10.80.80.104
+   ```
+
+3. **Limpiar caché DNS:**
+   ```cmd
+   ipconfig /flushdns
+   ipconfig /registerdns
+   ```
+
+4. **Reiniciar servicio DNS:**
+   ```cmd
+   net stop dnscache
+   net start dnscache
+   ```

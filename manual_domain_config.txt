@@ -1,0 +1,82 @@
+# Configuración manual para agregar nuevos dominios
+
+## Método 1: Usar el script automático
+```bash
+chmod +x add_new_domain.sh
+./add_new_domain.sh
+```
+
+## Método 2: Configuración manual
+
+### 1. Editar configuración de dnsmasq:
+```bash
+sudo nano /etc/dnsmasq.conf
+```
+
+### 2. Agregar estas líneas al final del archivo:
+```
+# Nuevo dominio: mipagina.com -> 192.168.1.100
+address=/mipagina.com/192.168.1.100
+address=/www.mipagina.com/192.168.1.100
+
+# Otro dominio: tienda.local -> 10.80.80.105
+address=/tienda.local/10.80.80.105
+address=/www.tienda.local/10.80.80.105
+```
+
+### 3. Reiniciar dnsmasq:
+```bash
+sudo systemctl restart dnsmasq
+```
+
+### 4. Verificar configuración:
+```bash
+# Ver configuración actual
+cat /etc/dnsmasq.conf | grep address=
+
+# Probar resolución
+nslookup mipagina.com 127.0.0.1
+nslookup tienda.local 127.0.0.1
+```
+
+## Ejemplos de configuración:
+
+### Para un servidor web local:
+```
+address=/miweb.local/10.80.80.104
+address=/www.miweb.local/10.80.80.104
+```
+
+### Para un servidor de desarrollo:
+```
+address=/dev.local/192.168.1.50
+address=/www.dev.local/192.168.1.50
+```
+
+### Para múltiples subdominios:
+```
+address=/api.local/10.80.80.104
+address=/admin.local/10.80.80.104
+address=/app.local/10.80.80.104
+```
+
+## Verificar que funciona:
+
+### En el servidor:
+```bash
+nslookup mipagina.com 127.0.0.1
+dig @127.0.0.1 mipagina.com
+```
+
+### En las máquinas cliente:
+```bash
+nslookup mipagina.com
+ping mipagina.com
+```
+
+## Notas importantes:
+
+1. **No necesitas reiniciar las máquinas cliente** - solo el servidor DNS
+2. **Los cambios son inmediatos** después de reiniciar dnsmasq
+3. **Puedes agregar tantos dominios como necesites**
+4. **Usa .local para dominios completamente locales** (no necesitan registro público)

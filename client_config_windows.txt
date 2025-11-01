@@ -1,0 +1,28 @@
+# Configuración para máquinas Windows cliente
+
+## Opción 1: Editar archivo hosts (más simple)
+# Ubicación del archivo: C:\Windows\System32\drivers\etc\hosts
+# Agregar esta línea:
+10.80.80.104    fiberops.com.pe
+10.80.80.104    www.fiberops.com.pe
+
+# Para editar el archivo hosts en Windows:
+# 1. Abrir Notepad como Administrador
+# 2. Abrir archivo: C:\Windows\System32\drivers\etc\hosts
+# 3. Agregar las líneas al final
+# 4. Guardar el archivo
+
+## Opción 2: Configurar DNS en Windows
+# 1. Ir a Configuración de Red
+# 2. Cambiar opciones del adaptador
+# 3. Clic derecho en la conexión de red → Propiedades
+# 4. Seleccionar "Protocolo de Internet versión 4 (TCP/IPv4)" → Propiedades
+# 5. Seleccionar "Usar las siguientes direcciones de servidor DNS"
+# 6. Servidor DNS preferido: 10.80.80.104
+# 7. Servidor DNS alternativo: 8.8.8.8 (Google DNS)
+# 8. Aceptar y cerrar
+
+## Verificar configuración:
+# Abrir CMD y ejecutar:
+# nslookup fiberops.com.pe
+# ping fiberops.com.pe

@@ -1,0 +1,136 @@
+# Comandos para verificar el servidor DNS local
+
+## En el servidor Ubuntu (10.80.80.104):
+
+### Verificar que dnsmasq esté funcionando:
+```bash
+# Estado del servicio
+sudo systemctl status dnsmasq
+
+# Verificar que esté escuchando en puerto 53
+sudo netstat -tulpn | grep :53
+sudo ss -tulpn | grep :53
+
+# Ver logs de dnsmasq
+sudo tail -f /var/log/dnsmasq.log
+sudo journalctl -u dnsmasq -f
+```
+
+### Probar resolución DNS local:
+```bash
+# Probar resolución local
+nslookup fiberops.com.pe 127.0.0.1
+nslookup www.fiberops.com.pe 127.0.0.1
+
+# Probar con dig
+dig @127.0.0.1 fiberops.com.pe
+dig @127.0.0.1 www.fiberops.com.pe
+
+# Probar desde la IP del servidor
+nslookup fiberops.com.pe 10.80.80.104
+```
+
+### Verificar configuración de dnsmasq:
+```bash
+# Ver configuración activa
+sudo dnsmasq --test
+
+# Verificar archivo de configuración
+cat /etc/dnsmasq.conf | grep -v "^#" | grep -v "^$"
+```
+
+## En las máquinas cliente:
+
+### Verificar configuración DNS:
+```bash
+# Linux
+cat /etc/resolv.conf
+systemd-resolve --status
+
+# Windows
+ipconfig /all
+```
+
+### Probar resolución DNS:
+```bash
+# Linux
+nslookup fiberops.com.pe
+dig fiberops.com.pe
+host fiberops.com.pe
+
+# Windows
+nslookup fiberops.com.pe
+```
+
+### Probar conectividad:
+```bash
+# Linux/Windows
+ping fiberops.com.pe
+ping 10.80.80.104
+
+# Probar puerto DNS
+telnet 10.80.80.104 53
+# O con nmap
+nmap -p 53 10.80.80.104
+```
+
+## Comandos de diagnóstico avanzado:
+
+### En el servidor:
+```bash
+# Ver consultas DNS en tiempo real
+sudo tcpdump -i any port 53
+
+# Verificar que dnsmasq esté respondiendo
+sudo netstat -an | grep :53
+
+# Probar con diferentes herramientas
+host fiberops.com.pe 10.80.80.104
+nslookup -type=A fiberops.com.pe 10.80.80.104
+```
+
+### En el cliente:
+```bash
+# Verificar ruta de resolución DNS
+traceroute 10.80.80.104
+
+# Probar con diferentes servidores DNS
+nslookup fiberops.com.pe 8.8.8.8  # Debería fallar
+nslookup fiberops.com.pe 10.80.80.104  # Debería funcionar
+```
+
+## Solución de problemas comunes:
+
+### Error: "DNS_PROBE_FINISHED_NXDOMAIN"
+```bash
+# 1. Verificar que dnsmasq esté ejecutándose
+sudo systemctl status dnsmasq
+
+# 2. Verificar configuración
+sudo dnsmasq --test
+
+# 3. Verificar logs
+sudo tail -f /var/log/dnsmasq.log
+
+# 4. Reiniciar dnsmasq
+sudo systemctl restart dnsmasq
+```
+
+### Error: "Connection refused"
+```bash
+# 1. Verificar firewall
+sudo ufw status
+sudo ufw allow 53
+
+# 2. Verificar que dnsmasq esté escuchando
+sudo netstat -tulpn | grep :53
+```
+
+### Error: "No response from server"
+```bash
+# 1. Verificar conectividad de red
+ping 10.80.80.104
+
+# 2. Verificar que el puerto 53 esté abierto
+telnet 10.80.80.104 53
+```

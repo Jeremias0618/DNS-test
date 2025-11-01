@@ -1,0 +1,117 @@
+# Configuración DNS para máquinas Linux cliente
+
+## Método 1: Configurar DNS desde netplan (Ubuntu 18.04+)
+
+### Editar configuración de red:
+```bash
+sudo nano /etc/netplan/01-netcfg.yaml
+```
+
+### Configuración ejemplo:
+```yaml
+network:
+  version: 2
+  ethernets:
+    eth0:  # Cambiar por tu interfaz de red
+      dhcp4: true
+      nameservers:
+        addresses:
+          - 10.80.80.104  # Tu servidor DNS local
+          - 8.8.8.8       # DNS de respaldo
+```
+
+### Aplicar configuración:
+```bash
+sudo netplan apply
+```
+
+## Método 2: Configurar DNS manualmente
+
+### Editar /etc/resolv.conf:
+```bash
+sudo nano /etc/resolv.conf
+```
+
+### Agregar estas líneas:
+```
+nameserver 10.80.80.104
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+```
+
+**Nota:** Este método puede ser sobrescrito por el sistema.
+
+## Método 3: Configurar DNS desde NetworkManager
+
+### Comando nmcli:
+```bash
+# Ver conexiones disponibles
+nmcli connection show
+
+# Configurar DNS (reemplazar "Wired connection 1" por tu conexión)
+sudo nmcli connection modify "Wired connection 1" ipv4.dns "10.80.80.104,8.8.8.8"
+
+# Reiniciar conexión
+sudo nmcli connection down "Wired connection 1"
+sudo nmcli connection up "Wired connection 1"
+```
+
+### Interfaz gráfica:
+1. Ir a Configuración → Red
+2. Seleccionar tu conexión
+3. Clic en "Configuración" (engranaje)
+4. Ir a pestaña "IPv4"
+5. Configurar DNS: `10.80.80.104,8.8.8.8`
+6. Aplicar cambios
+
+## Verificar configuración:
+
+### Comandos de verificación:
+```bash
+# Ver configuración DNS actual
+cat /etc/resolv.conf
+
+# Ver configuración de red
+ip addr show
+
+# Probar resolución DNS
+nslookup fiberops.com.pe
+nslookup fiberops.com.pe 10.80.80.104
+
+# Probar con dig
+dig fiberops.com.pe
+dig @10.80.80.104 fiberops.com.pe
+
+# Probar conectividad
+ping fiberops.com.pe
+ping 10.80.80.104
+
+# Limpiar caché DNS (systemd-resolved)
+sudo systemctl restart systemd-resolved
+```
+
+## Solución de problemas:
+
+### Si no funciona:
+1. **Verificar que el servidor DNS esté funcionando:**
+   ```bash
+   nslookup fiberops.com.pe 10.80.80.104
+   ```
+
+2. **Verificar conectividad:**
+   ```bash
+   ping 10.80.80.104
+   telnet 10.80.80.104 53
+   ```
+
+3. **Verificar logs del servidor DNS:**
+   ```bash
+   # En el servidor Ubuntu
+   sudo tail -f /var/log/dnsmasq.log
+   ```
+
+4. **Reiniciar servicios de red:**
+   ```bash
+   sudo systemctl restart systemd-resolved
+   sudo systemctl restart NetworkManager
+   ```

@@ -1,0 +1,14 @@
+# Configuración para el archivo /etc/hosts en el servidor Ubuntu
+# Agregar esta línea al archivo /etc/hosts:
+
+127.0.0.1    fiberops.com.pe
+10.80.80.104 fiberops.com.pe
+
+# El archivo /etc/hosts debería verse así:
+# 127.0.0.1	localhost
+# 127.0.1.1	ubuntu-server
+# 127.0.0.1    fiberops.com.pe
+# 10.80.80.104 fiberops.com.pe
+
+# Comando para editar el archivo:
+# sudo nano /etc/hosts

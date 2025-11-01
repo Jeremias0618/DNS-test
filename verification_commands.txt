@@ -1,0 +1,47 @@
+# Comandos para verificar la configuración
+
+## En el servidor Ubuntu:
+# Verificar que Apache esté funcionando:
+sudo systemctl status apache2
+
+# Verificar que el sitio esté activo:
+sudo a2ensite
+
+# Verificar configuración de Apache:
+sudo apache2ctl configtest
+
+# Ver logs de Apache:
+sudo tail -f /var/log/apache2/fiberops_access.log
+sudo tail -f /var/log/apache2/fiberops_error.log
+
+# Probar resolución DNS local:
+nslookup fiberops.com.pe
+ping fiberops.com.pe
+
+## En las máquinas cliente:
+# Verificar resolución DNS:
+nslookup fiberops.com.pe
+ping fiberops.com.pe
+
+# Probar acceso web:
+curl -I http://fiberops.com.pe
+# O abrir en navegador: http://fiberops.com.pe
+
+## Solución de problemas comunes:
+
+# Si no funciona la resolución DNS:
+# 1. Verificar que el archivo hosts esté correcto
+# 2. Limpiar caché DNS:
+#    Windows: ipconfig /flushdns
+#    Linux: sudo systemctl restart systemd-resolved
+#    macOS: sudo dscacheutil -flushcache
+
+# Si Apache no responde:
+# 1. Verificar que Apache esté ejecutándose: sudo systemctl status apache2
+# 2. Verificar configuración: sudo apache2ctl configtest
+# 3. Verificar logs: sudo tail -f /var/log/apache2/error.log
+
+# Si el Virtual Host no funciona:
+# 1. Verificar que esté activo: sudo a2ensite
+# 2. Recargar Apache: sudo systemctl reload apache2
+# 3. Verificar permisos del directorio web
