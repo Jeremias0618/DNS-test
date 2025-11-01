@@ -5,7 +5,7 @@
 [![Windows](https://img.shields.io/badge/Windows-Clients-0078D6?logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 [![dnsmasq](https://img.shields.io/badge/dnsmasq-2.x-2D2D2D)](https://thekelleys.org.uk/dnsmasq/doc.html)
 [![Apache](https://img.shields.io/badge/Apache-HTTP%20Server-D22128?logo=apache&logoColor=white)](https://httpd.apache.org/)
-[![Repo Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FJeremias0618%2FDNS-test&title=Repo%20Hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![Repo Visits](https://visitor-badge.laobi.icu/badge?page_id=Jeremias0618.DNS-test)](https://visitor-badge.laobi.icu/)
 
 Plataforma de pruebas para un resolver DNS local autoritativo apoyado en `dnsmasq`, enfocada en publicar `fiberops.com.pe` dentro de un segmento LAN controlado y validar la resolución desde estaciones Linux y Windows.
 
