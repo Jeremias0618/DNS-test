@@ -61,9 +61,4 @@ Plataforma de pruebas para un resolver DNS local autoritativo apoyado en `dnsmas
 - Errores NXDOMAIN: revisar logs de `dnsmasq`, validar la existencia de entradas `address=/dominio/IP` y flushear caché cliente (`ipconfig /flushdns` o `systemd-resolve --flush-caches`).
 - Conectividad: comprobar reachability con `ping 10.80.80.104` y analizar latencia mediante `traceroute` o `pathping`.
 
-## Métricas del proyecto
-
-- Scripts de automatización: 3
-- Guías de configuración cliente: 4
-- Archivos de soporte (Apache + hosts + verificación): 3
 
